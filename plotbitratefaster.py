@@ -86,14 +86,14 @@ if spec == "V":
 total_time = float(fmt_data["format"].get('duration'))
 
 
-def main():
+def main(frame_rate):
     frame_count = 0
     now = time.time()
     bitrate_data = {}
     once = False
-    global frame_rate
     with subprocess.Popen(
-            ["ffprobe", "-threads", f"{cores-1}",
+            ["ffprobe",
+             #"-threads", f"{cores-1}",
              "-show_entries", "packet=size,duration_time,pts_time,flags",
              "-select_streams", f"{spec}:{args.index}",
              "-print_format", "json=compact=1",
@@ -216,4 +216,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(frame_rate)
