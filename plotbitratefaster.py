@@ -86,14 +86,14 @@ if spec == "V":
 total_time = float(fmt_data["format"].get('duration'))
 
 
-async def main():
+def main():
     frame_count = 0
     now = time.time()
     bitrate_data = {}
     once = False
     global frame_rate
     with subprocess.Popen(
-            ["ffprobe", "-threads", f"{cores}*1.5",
+            ["ffprobe", "-threads", f"{cores-1}",
              "-show_entries", "packet=size,duration_time,pts_time,flags",
              "-select_streams", f"{spec}:{args.index}",
              "-print_format", "json=compact=1",
@@ -216,8 +216,4 @@ async def main():
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-
-    pending = asyncio.Task.all_tasks()
-    loop.run_until_complete(asyncio.gather(*pending))
+    main()
